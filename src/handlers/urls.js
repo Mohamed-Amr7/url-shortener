@@ -1,27 +1,15 @@
+const dotenv = require('dotenv')
 const Url = require('../models/Url')
 
-/**
- * This function retrieves all saved URLs from the database and returns them as an array.
- *
- * Expected Behavior:
- *  - Attempts to retrieve all saved URLs from the database using an asynchronous operation
- *  - If successful (no error encountered), returns the retrieved URLs as an array.
- *  - If an error occurs during retrieval, re-throws the error for handling by middleware.
- *
- * @example
- * ```javascript
- * router.get("/all", async (req, res) => {
- *   try {
- *     const data = await Url.find();
- *     res.status(200).json({ message: "Successfully retrieved all URLs", data });
- *   } catch (error) {
- *     console.error(error);
- *     res.status(500).json({ message: "Internal Server Error" });
- *   }
- * });
- * ```
- **/
+const {generateHash} = require('./hashes')
+dotenv.config({ path: './.env' });
 
+/**
+ * Asynchronously fetches all URL documents from the database using the `Url.find()` method.
+ *
+ * @throws {Error} - Re-throws any errors encountered during the database operation.
+ * @returns {Promise<Url[]>} - A promise that resolves to an array of `Url` documents if successful.
+ */
 const getUrls = async () => {
     try {
         return await Url.find();
@@ -30,4 +18,53 @@ const getUrls = async () => {
     }
 };
 
-module.exports = getUrls
+/**
+ * Asynchronously retrieves a specific URL document from the database based on its original URL.
+ *
+ * @param {string} url - The original URL to search for.
+ * @throws {Error} - Re-throws any errors encountered during the database operation.
+ * @returns {Promise<Url>} - A promise that resolves to the matching `Url` document if found, or `null` otherwise.
+ */
+const getUrl = async (url) => {
+    try {
+        return await Url.findOne({origUrl: url})
+    } catch (err) {
+        throw err; // Re-throw for middleware to handle
+    }
+}
+
+/**
+ * Asynchronously creates a new URL document in the database.
+ *
+ * @param {object} data - An object containing properties for the new URL document:
+ *   - `origUrl` (string): The original, long URL.
+ *   - `base` (string): The base URL for generating the shortened URL (optional).
+ *   - `hash` (string): A unique hash for the shortened URL (generated if not provided).
+ *   - `date` (Date): The creation date (defaults to the current date).
+ *   - `clicks` (number): The initial number of clicks for the shortened URL (defaults to 0).
+ * @throws {Error} - Re-throws any errors encountered during the database operation.
+ * @returns {Promise<Url>} - A promise that resolves to the newly created `Url` document.
+ */
+const createUrl = async ({origUrl, base, hash, date = Date(), clicks = 0}) => {
+    try {
+        if(!hash) hash = await generateHash()
+        const shortUrl = `${base}/${hash}`
+        const url = new Url({
+            origUrl,
+            shortUrl,
+            hash,
+            clicks,
+            date,
+        });
+        await url.save()
+        return url
+    } catch (err) {
+        throw err // Re-throw for middleware to handle
+    }
+}
+
+module.exports = {
+    createUrl,
+    getUrls,
+    getUrl,
+}
