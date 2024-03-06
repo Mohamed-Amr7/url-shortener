@@ -1,5 +1,5 @@
-const getStatusCode = require('getStatusCode');
-const getErrorMessage = require('getErrorMessage');
+const getStatusCode = require('./getStatusCode');
+const getErrorMessage = require('./getErrorMessage');
 
 errorMiddleware = (err, req, res) => {
     const statusCode = getStatusCode(err);
