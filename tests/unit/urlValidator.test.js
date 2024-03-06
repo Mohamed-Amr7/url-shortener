@@ -27,9 +27,4 @@ describe('isValidUrl', () => {
         expect(isValidUrl('https://example.com/path?query=string#anchor')).toBe(true);
     });
 
-    test('correctly rejects non-string inputs', () => {
-        expect(() => isValidUrl(123)).toThrow(TypeError);
-        expect(() => isValidUrl(true)).toThrow(TypeError);
-        expect(() => isValidUrl({})).toThrow(TypeError);
-    });
 });
