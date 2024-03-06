@@ -10,6 +10,10 @@ const UrlSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    hash:{
+        type: String,
+        required : true,
+    },
     clicks: {
         type: Number,
         default: 0,
