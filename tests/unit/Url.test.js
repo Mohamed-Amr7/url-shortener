@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Url = require('../../src/models/Url');
 const dotenv = require("dotenv");
+const {createUrl} = require("../../src/handlers/urls");
 dotenv.config({path: './.env'}); // Load environment variables
 
 
@@ -23,14 +24,13 @@ if (process.env.TEST_MONGODB_URI) {
 }
 
 test('Create a new Url entry with valid data', async () => {
-    const url = new Url({
-        origUrl: 'https://www.example.com/',
-        shortUrl: 'abc123',
-    });
-    await url.save();
+    let base = process.env.APP_URL
+    let url = await createUrl({origUrl: 'https://www.example.com/',hash: 'abc123',base})
+
     expect(url.isNew).toBeFalsy(); // Ensure the document is saved successfully
     expect(url.origUrl).toBe('https://www.example.com/');
-    expect(url.shortUrl).toBe('abc123');
+    expect(url.hash).toBe('abc123');
+    expect(url.shortUrl).toBe(`${base}/abc123`);
     expect(url.clicks).toBe(0); // Default value
     expect(url.date).not.toBeNull(); // Date should be set
 
