@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 
 const validateUrl = require('../utils/urlValidator')
-const {createUrl, getUrl} = require('../handlers/urls')
+const {createUrl, getUrlByOriginal} = require('../handlers/urls')
 
 /**
  * ### This route handler creates or retrieves a shortened URL.
@@ -34,7 +34,7 @@ router.post("/short", async (req, res, next) => {
 
     if (validateUrl(origUrl)) {
         try {
-            let url = await getUrl(origUrl);
+            let url = await getUrlByOriginal(origUrl);
             if (url) {
                 res.status(200).json({
                     message: "Existing short URL found",
