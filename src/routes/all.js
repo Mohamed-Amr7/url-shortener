@@ -1,11 +1,11 @@
 const express = require("express")
-const getUrls = require('src/handlers/urls')
+const {getUrls} = require('../handlers/urls')
 const router = express.Router()
 
 /**
- * This function retrieves all saved URLs from the database and sends them as a JSON response to the client.
+ * ### This function retrieves all saved URLs from the database and sends them as a JSON response to the client.
  *
- * Route: GET /all
+ * ### Route: GET /all
  *
  * Expected Behavior:
  *  - Upon receiving a GET request to `/all`, the function calls the `getUrls` function to retrieve the data asynchronously.
@@ -15,8 +15,8 @@ const router = express.Router()
  **/
 router.get("/all", async (req, res,next) => {
     try {
-        const data = await getUrls();
-        return res.status(200).json({ message: "Successfully retrieved all URLs",data });
+        const data = await getUrls()
+        res.status(200).json({ message: "Successfully retrieved all URLs",data });
     } catch (err) {
        return next(err)
     }
