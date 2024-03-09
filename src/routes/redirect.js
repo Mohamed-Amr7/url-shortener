@@ -14,6 +14,7 @@ const router = express.Router()
  *
  * **If a matching URL document is found:**
  <ul>
+ <li> Sends a 302 Found response
  <li>Increments the click count for the URL document.</li>
  <li>Saves the updated URL document to the database.</li>
  <li>Redirects the user to the original URL (`origUrl`) stored in the document.</li>
@@ -35,7 +36,7 @@ router.get("/:hash", async (req, res,next) => {
         if (url) {
             url.clicks++;
             url.save();
-            return res.redirect(url.origUrl);
+            return res.redirect(url.origUrl); // Returns status code 302
         } else res.status(404).json("Not found");
     } catch (err) {
         next()
