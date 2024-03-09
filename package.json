@@ -3,10 +3,10 @@
     "version": "1.0.0",
     "main": "src/app.js",
     "scripts": {
-        "test": "jest",
-        "e2e": "supertest tests/e2e.test.js",
+        "test": "jest ./tests/unit",
+        "test:e2e": "jest tests/e2e",
         "start": "node src/app.js",
-        "dev": "nodemon src/app.js"
+        "start:dev": "nodemon src/app.js"
     },
     "devDependencies": {
         "jest": "^28.1.3",
