@@ -5,8 +5,7 @@ const {generateHash} = require('./hashes')
 dotenv.config({ path: './.env' });
 
 /**
- * Asynchronously fetches all URL documents from the database using the `Url.find()` method.
- *
+ * @description Asynchronously fetches all URL documents from the database using the `Url.find()` method.
  * @throws {Error} - Re-throws any errors encountered during the database operation.
  * @returns {Promise<Url[]>} - A promise that resolves to an array of `Url` documents if successful.
  */
@@ -19,8 +18,7 @@ const getUrls = async () => {
 };
 
 /**
- * Asynchronously retrieves a specific URL document from the database based on its original URL.
- *
+ * @description Asynchronously retrieves a specific URL document from the database based on its original URL.
  * @param {string} origUrl - The original URL to search for.
  * @throws {Error} - Re-throws any errors encountered during the database operation.
  * @returns {Promise<Url>} - A promise that resolves to the matching `Url` document if found, or `null` otherwise.
@@ -34,8 +32,7 @@ const getUrlByOriginal = async (origUrl) => {
 };
 
 /**
- * Asynchronously retrieves a specific URL document from the database based on its hash.
- *
+ * @description Asynchronously retrieves a specific URL document from the database based on its hash.
  * @param {string} hash - The hash portion of the URL to search for.
  * @throws {Error} - Re-throws any errors encountered during the database operation.
  * @returns {Promise<Url>} - A promise that resolves to the matching `Url` document if found, or `null` otherwise.
@@ -49,9 +46,8 @@ const getUrlByHash = async (hash) => {
 };
 
 /**
-* Asynchronously retrieves a specific URL document from the database based on its MongoDB ID.
-*
-* @param {ObjectId} id - The MongoDB ID of the URL to search for.
+* @description Asynchronously retrieves a specific URL document from the database based on its MongoDB ID.
+* @param {string} id - The MongoDB ID of the URL to search for.
 * @throws {Error} - Re-throws any errors encountered during the database operation.
 * @returns {Promise<Url>} - A promise that resolves to the matching `Url` document if found, or `null` otherwise.
 */
@@ -65,9 +61,9 @@ const getUrlById = async (id) => {
 };
 
 /**
- * Asynchronously creates a new URL document in the database.
- *
+ * @description Asynchronously creates a new URL document in the database.
  * @param {object} data - An object containing properties for the new URL document:
+ *
  *   - `origUrl` (string): The original, long URL.
  *   - `base` (string): The base URL for generating the shortened URL (optional).
  *   - `hash` (string): A unique hash for the shortened URL (generated if not provided).

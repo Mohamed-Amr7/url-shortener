@@ -2,32 +2,24 @@ const mongoose = require('mongoose')
 const dotenv = require("dotenv")
 const request = require('supertest');
 const express = require("express");
-const routes = require("../../src/routes");
-const errorMiddleware = require("../../src/utils/errorMiddleware");
-const {createUrl, getUrlById} = require("../../src/handlers/urls");
+const routes = require("../../routes");
+const connectDB = require('../../config/db')
+const errorMiddleware = require("../../utils/errorMiddleware");
+const {createUrl, getUrlById} = require("../../handlers/urls");
 
 
 describe('URL Shortener E2E Tests', () => {
     let app
     let baseUrl
     beforeAll(async () => {
-        dotenv.config({path: './.env'}) // Load environment variables
-
-        // Prioritize connecting to the test database (TEST_MONGODB_URI) if available,
-        // otherwise connect to the primary MongoDB (MONGODB_URI).
-        if (process.env.TEST_MONGODB_URI) {
-            await mongoose.connect(process.env.TEST_MONGODB_URI, {
-                useNewUrlParser: true, useUnifiedTopology: true
-            })
-                .then(() => console.log('Connected to Test MongoDB'))
-                .catch(err => console.error('Error connecting to Test MongoDB:', err));
-        } else {
-            await mongoose.connect(process.env.MONGODB_URI, {
-                useNewUrlParser: true, useUnifiedTopology: true
-            })
-                .then(() => console.log('Connected to MongoDB'))
-                .catch(err => console.error('Error connecting to MongoDB:', err));
+        dotenv.config({path: '../.env'}) // Load environment variables
+        try {
+            await connectDB(process.env.TEST_MONGODB_URI)
         }
+        catch (err){
+            process.exit()
+        }
+
         baseUrl = process.env.APP_URL
         app = express();
 

@@ -1,5 +1,5 @@
 // Import the function
-const isValidUrl = require('../../src/utils/urlValidator');
+const isValidUrl = require('../../utils/urlValidator');
 
 describe('isValidUrl', () => {
     // Test cases for valid URLs with different components

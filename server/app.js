@@ -1,18 +1,12 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const errorMiddleware = require('./utils/errorMiddleware')
-const routes = require("./routes/index");
+const routes = require("./routes");
+const connectDB = require('./config/db')
 dotenv.config({ path: './.env' }); // Load environment variables
 
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('Error connecting to MongoDB:', err));
+connectDB()
 
 const app = express();
 

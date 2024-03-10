@@ -1,12 +1,12 @@
 {
     "name": "url-shortener",
     "version": "1.0.0",
-    "main": "src/app.js",
+    "main": "app.js",
     "scripts": {
-        "test": "jest ./tests/unit",
-        "test:e2e": "jest tests/e2e",
-        "start": "node src/app.js",
-        "start:dev": "nodemon src/app.js"
+        "test": "jest server/__tests__/unit",
+        "test:e2e": "jest ../server/__tests__/e2e",
+        "start": "node app.js",
+        "dev": "nodemon server/app.js"
     },
     "devDependencies": {
         "jest": "^28.1.3",

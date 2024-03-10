@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
-const Url = require('../../src/models/Url')
-const {getUrls, getUrlByHash, getUrlByOriginal, createUrl, getUrlById} = require('../../src/handlers/urls');
+const Url = require('../../models/Url')
+const {getUrls, getUrlByHash, getUrlByOriginal, createUrl, getUrlById} = require('../../handlers/urls');
 
-jest.mock('../../src/models/Url');
+jest.mock('../../models/Url');
 
 describe("Url handlers' Tests", () => {
 
