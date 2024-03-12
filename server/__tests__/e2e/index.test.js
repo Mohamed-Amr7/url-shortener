@@ -24,7 +24,7 @@ describe('URL Shortener E2E Tests', () => {
         app = express();
 
         app.use(express.json())
-        app.use(routes)
+        app.use('/api',routes)
         app.use(errorMiddleware)
     });
 
@@ -33,10 +33,10 @@ describe('URL Shortener E2E Tests', () => {
     });
 
 
-    it('should create a shortened URL with a POST request to /short and return 201 Created', async () => {
+    it('should create a shortened URL with a POST request to /api/short and return 201 Created', async () => {
         const origUrl = 'https://www.test.com/';
         const response = await request(app)
-            .post('/short')
+            .post('/api/short')
             .send({ origUrl });
         expect(response.statusCode).toBe(201); // Expect Created status code
         expect(response.body.data).toHaveProperty('shortUrl'); // Verify shortUrl exists
@@ -55,7 +55,7 @@ describe('URL Shortener E2E Tests', () => {
 
         // Send a POST request to create the same URL again
         const response = await request(app)
-            .post('/short')
+            .post('/api/short')
             .send({ origUrl });
 
         expect(response.statusCode).toBe(200); // Expect OK status code
@@ -64,19 +64,19 @@ describe('URL Shortener E2E Tests', () => {
         expect(response.body.data).toMatchObject({
             origUrl,
             shortUrl: createdUrl.shortUrl,
-            hash: createdUrl.hash,
+            shortId: createdUrl.shortId,
             clicks: createdUrl.clicks,
         });
 
         await createdUrl.delete();
     });
 
-    it('should return all shortened URLs with a GET request to /all', async () => {
+    it('should return all shortened URLs with a GET request to /api/all', async () => {
         // Create some test URLs
         const url1 = await createUrl({ origUrl: 'https://www.google.com/',base: baseUrl });
         const url2 = await createUrl({ origUrl: 'https://www.youtube.com/' ,base: baseUrl});
 
-        const response = await request(app).get('/all');
+        const response = await request(app).get('/api/all');
 
         expect(response.statusCode).toBe(200); // Expect OK status code
         expect(response.body.data).toBeInstanceOf(Array); // Expect an array response
@@ -89,11 +89,11 @@ describe('URL Shortener E2E Tests', () => {
         await url2.delete()
     });
 
-    it('should redirect to the original URL with a GET request to /:hash', async () => {
+    it('should redirect to the original URL with a GET request to /api/:shortId', async () => {
         const origUrl = 'https://www.test.com/';
         const createdUrl = await createUrl({ origUrl ,base: baseUrl});
-        const hash = createdUrl.hash;
-        const response = await request(app).get(`/${hash}`);
+        const shortId = createdUrl.shortId;
+        const response = await request(app).get(`/api/${shortId}`);
 
         expect(response.statusCode).toBe(302); // Expect Found status code
         expect(response.headers.location).toBe(origUrl); // Verify redirection

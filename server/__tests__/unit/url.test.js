@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Url = require('../../models/Url')
-const {getUrls, getUrlByHash, getUrlByOriginal, createUrl, getUrlById} = require('../../handlers/urls');
+const {getUrls, getUrlByShortId, getUrlByOriginal, createUrl, getUrlById} = require('../../handlers/urls');
 
 jest.mock('../../models/Url');
 
@@ -12,7 +12,7 @@ describe("Url handlers' Tests", () => {
                 "_id": 1,
                 "origUrl": "https://www.example.com/",
                 "shortUrl": "http://127.0.0.1:5000/abc123",
-                "hash": "abc123",
+                "shortId": "abc123",
                 "clicks": 0,
                 "date": "2024-03-05",
             },
@@ -20,7 +20,7 @@ describe("Url handlers' Tests", () => {
                 "_id": 2,
                 "origUrl": "https://www.example.net/",
                 "shortUrl": "http://127.0.0.1:5000/abcdef",
-                "hash": "abcdef",
+                "shortId": "abcdef",
                 "clicks": 0,
                 "date": "2020-02-10",
             }
@@ -38,7 +38,7 @@ describe("Url handlers' Tests", () => {
             "_id": 1,
             "origUrl": "https://www.example.com/",
             "shortUrl": "http://127.0.0.1:5000/abc123",
-            "hash": "abc123",
+            "shortId": "abc123",
             "clicks": 0,
             "date": "2024-03-05",
         };
@@ -50,30 +50,30 @@ describe("Url handlers' Tests", () => {
         expect(url).toEqual(mockUrl);
     });
 
-    test('getUrlByHash retrieves a URL by its hash', async () => {
+    test('getUrlByShortId retrieves a URL by its shortId', async () => {
         const mockUrl = {
             "_id": 1,
             "origUrl": "https://www.example.com/",
             "shortUrl": "http://127.0.0.1:5000/abc123",
-            "hash": "abc123",
+            "shortId": "abc123",
             "clicks": 0,
             "date": "2024-03-05",
         }
         Url.findOne.mockResolvedValueOnce(mockUrl);
 
-        const url = await getUrlByHash('abc123');
+        const url = await getUrlByShortId('abc123');
 
-        expect(Url.findOne).toHaveBeenCalledWith({hash: 'abc123'});
+        expect(Url.findOne).toHaveBeenCalledWith({shortId: 'abc123'});
         expect(url).toEqual(mockUrl);
     });
 
-    test('getUrlByHash retrieves a URL by its MongoDB ObjectID', async () => {
+    test('getUrlByshortId retrieves a URL by its MongoDB ObjectID', async () => {
         const mockObjectId = new mongoose.Types.ObjectId();
         const mockUrl = {
             _id: mockObjectId,
             origUrl: "https://www.example.com/",
             shortUrl: "http://127.0.0.1:5000/abc123",
-            hash: "abc123",
+            shortId: "abc123",
             clicks: 0,
             date: "2022-08-02",
         };
@@ -90,13 +90,13 @@ describe("Url handlers' Tests", () => {
         await createUrl({
             origUrl: 'https://example.org',
             base: 'https://shortener',
-            hash: 'abc123',
+            shortId: 'abc123',
         });
 
         expect(Url).toHaveBeenCalledWith({
             origUrl: 'https://example.org',
             shortUrl: 'https://shortener/abc123',
-            hash: 'abc123',
+            shortId: 'abc123',
             date: Date(),
             clicks: 0
         })
@@ -104,13 +104,13 @@ describe("Url handlers' Tests", () => {
 
     test('Create a new Url entry with missing required field', async () => {
         Url.mockImplementationOnce(() => {
-            throw new Error('Missing required fields: origUrl, hash');
+            throw new Error('Missing required fields: origUrl, shortId');
         });
 
         try {
             await createUrl({shortUrl: 'abc123'});
         } catch (error) {
-            expect(error.message).toEqual('Missing required fields: origUrl, hash');
+            expect(error.message).toEqual('Missing required fields: origUrl, shortId');
         }
     })
 })
