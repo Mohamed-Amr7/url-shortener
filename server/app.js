@@ -4,14 +4,17 @@ const cors = require('cors')
 const errorMiddleware = require('./utils/errorMiddleware')
 const routes = require("./routes");
 const connectDB = require('./config/db')
-dotenv.config({ path: './.env' }); // Load environment variables
-
+dotenv.config({ path: './.env' });
 
 connectDB()
 
 const app = express();
-
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
+}))
 app.use(express.json())
 app.use('/api',routes)
 app.use(errorMiddleware)
