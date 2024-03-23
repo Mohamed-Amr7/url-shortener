@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 const Url = require('../../models/Url')
-const {getUrls, getUrlByShortId, getUrlByOriginal, createUrl, getUrlById} = require('../../handlers/urls');
+const {getUrls, getUrlByShortId, getUrlByOriginal, createUrl, getUrlById} = require('../../utils/urlHelpers');
 
 jest.mock('../../models/Url');
 
-describe("Url handlers' Tests", () => {
+describe("Url controllers' Tests", () => {
 
     test('getUrls successfully retrieves all URLs', async () => {
         const mockUrls = [
