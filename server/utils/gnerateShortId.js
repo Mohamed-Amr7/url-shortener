@@ -8,7 +8,7 @@ const {generate} = require("shortid");
  * @returns {Promise<boolean>} - A promise that resolves to `true` if the shortId exists, `false` otherwise.
  */
 const isUniqueShortId = async (shortId)=>{
-    const base = process.env.APP_URL
+    const base = process.env.CLIENT_BASE_URL
     let url = `${base}/${shortId}`
     let found = await Url.findOne({shortUrl : url})
     return !!found;

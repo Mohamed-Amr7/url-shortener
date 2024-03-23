@@ -1,7 +1,7 @@
 const dotenv = require('dotenv')
 const Url = require('../models/Url')
 
-const {generateShortId} = require('./shortIds')
+const {generateShortId} = require('./gnerateShortId')
 dotenv.config({ path: './.env' });
 
 /**
