@@ -11,7 +11,6 @@ mongoose.set("strictQuery", true, "useNewUrlParser", true, "useUnifiedTopology",
  *   using the `MONGODB_URI` environment variable.
  * @returns {Promise<void>} - A promise that resolves when the connection is established.
  */
-
 const connectDB = async (dbUrl = db) => {
     await mongoose.connect(dbUrl)
         .then(() => console.log('Connected to MongoDB'))
