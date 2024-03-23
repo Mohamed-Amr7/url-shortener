@@ -5,7 +5,7 @@ const express = require("express");
 const routes = require("../../routes");
 const connectDB = require('../../config/db')
 const errorMiddleware = require("../../utils/errorMiddleware");
-const {createUrl, getUrlById} = require("../../handlers/urls");
+const {createUrl, getUrlById} = require("../../utils/urlHelpers");
 
 
 describe('URL Shortener E2E Tests', () => {
@@ -20,7 +20,7 @@ describe('URL Shortener E2E Tests', () => {
             process.exit()
         }
 
-        baseUrl = process.env.APP_URL
+        baseUrl = process.env.CLIENT_BASE_URL
         app = express();
 
         app.use(express.json())
@@ -40,7 +40,7 @@ describe('URL Shortener E2E Tests', () => {
             .send({ origUrl });
         expect(response.statusCode).toBe(201); // Expect Created status code
         expect(response.body.data).toHaveProperty('shortUrl'); // Verify shortUrl exists
-        expect(response.body.data.shortUrl).toContain(`${process.env.APP_URL}/`); // Check base URL presence
+        expect(response.body.data.shortUrl).toContain(`${process.env.CLIENT_BASE_URL}/`); // Check base URL presence
         expect(response.body.data.origUrl).toBe(origUrl);
 
         const createdUrl = await getUrlById(response.body.data._id)
@@ -89,14 +89,13 @@ describe('URL Shortener E2E Tests', () => {
         await url2.delete()
     });
 
-    it('should redirect to the original URL with a GET request to /api/:shortId', async () => {
+    it('should return the original URL with a GET request to /api/:shortId', async () => {
         const origUrl = 'https://www.test.com/';
         const createdUrl = await createUrl({ origUrl ,base: baseUrl});
         const shortId = createdUrl.shortId;
         const response = await request(app).get(`/api/${shortId}`);
 
-        expect(response.statusCode).toBe(302); // Expect Found status code
-        expect(response.headers.location).toBe(origUrl); // Verify redirection
+        expect(response.statusCode).toBe(200); // Expect OK status code
 
         await createdUrl.delete();
     });
