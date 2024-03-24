@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-require("dotenv").config({path: '../.env'});
+require("dotenv").config();
 const db = process.env.MONGODB_URI;
 mongoose.set("strictQuery", true, "useNewUrlParser", true, "useUnifiedTopology", true);
 
