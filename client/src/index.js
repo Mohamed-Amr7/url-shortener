@@ -5,8 +5,9 @@ import configStore from './store';
 import AppRouter from './routes/AppRouter';
 
 const store = configStore();
+const nodeEnv = process.env.REACT_APP_NODE_ENV
 
-
+nodeEnv === 'development' &&
 store.subscribe(() => {
     console.log(store.getState())
 })
