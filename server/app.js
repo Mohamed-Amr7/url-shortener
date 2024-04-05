@@ -19,7 +19,7 @@ app.use(express.json())
 app.use('/api',routes)
 app.use(errorMiddleware)
 
-const PORT = process.env.PORT || 3000; // Use port from .env or default to 3000
+const PORT = process.env.PORT || 8080; // Use port from .env or default to 8080
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 
