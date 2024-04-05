@@ -12,7 +12,7 @@ const {createUrl, getUrlByOriginal} = require('../utils/urlHelpers')
  */
 async function shortenUrl(req, res, next) {
     const {origUrl} = req.body;
-    const base = process.env.CLIENT_BASE_URL; // Base URL (e.g., 'https://localhost:3000')
+    const base = process.env.CLIENT_BASE_URL; // Base URL (e.g., 'localhost:3000')
 
     if (validateUrl(origUrl)) {
         try {
