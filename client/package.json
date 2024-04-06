@@ -23,6 +23,7 @@
   },
   "homepage": "http://mohamed-amr7.github.io/url-shortener",
   "scripts": {
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build ",
