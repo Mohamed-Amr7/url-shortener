@@ -2,8 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 
-const baseClientUrl = process.env.REACT_APP_CLIENT_URL ?? 'localhost:3000'
-
 const UrlView = ({isLoading, url, generationError}) => (
     <div>
         {isLoading
@@ -17,9 +15,9 @@ const UrlView = ({isLoading, url, generationError}) => (
                 : url && <div>
                 <p className="lead text-center">
                     <a href={url.data.shortId} target="_blank" id="url">
-                        {baseClientUrl}/{url.data.shortId}
+                        {url.data.shortUrl}
                     </a>
-                    <CopyToClipboard text={baseClientUrl + '/' + url.data.shortId} style={{display: "inline-block"}}>
+                    <CopyToClipboard text={url.data.shortUrl} style={{display: "inline-block"}}>
                         <button className="btn btn-link" onClick={() => alert("Copied to clipboard!")}>
                             <i className="copy-clipboard far fa-clipboard" id="clipboard"></i>
                         </button>
