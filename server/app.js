@@ -4,6 +4,7 @@ const cors = require('cors')
 const errorMiddleware = require('./utils/errorMiddleware')
 const routes = require("./routes");
 const connectDB = require('./config/db')
+const path = require('path');
 dotenv.config();
 
 connectDB()
@@ -18,6 +19,12 @@ app.use(cors({
 app.use(express.json())
 app.use('/api',routes)
 app.use(errorMiddleware)
+
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 
 const PORT = process.env.PORT || 8080; // Use port from .env or default to 8080
 
