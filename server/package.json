@@ -6,7 +6,11 @@
         "test": "jest server/__tests__/unit",
         "test:e2e": "jest server/__tests__/e2e",
         "start": "node app.js",
-        "dev": "nodemon server/app.js"
+        "dev": "nodemon server/app.js",
+        "build:frontend": "cd ../client && npm install && npm run build",
+        "build:backend": "npm install",
+        "build": "npm run build:frontend && npm run build:backend"
+
     },
     "devDependencies": {
         "jest": "^28.1.3",
